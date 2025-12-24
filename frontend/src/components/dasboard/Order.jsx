@@ -5,6 +5,7 @@ import axios from 'axios'
 import {toast} from 'react-hot-toast'
 
 const Order = () => {
+  const [err,setErr]=useState(null)
   const [stateOrder,setStateOrder]=useState('order')
   const [refresh, setRefresh] = useState(false);
   const [requirements, setRequirements] = useState([]);
@@ -35,14 +36,23 @@ const Order = () => {
       productName: productName.toUpperCase(),
       productQty: productQty,
     };
-    const response=await axios.post(`${import.meta.env.VITE_BACKEND_SERVER_URL}/api/requirements/add`,newProduct)
-    console.log()
-    if(response.status===201){
-      toast.success('Saved')
-      setRefresh(prev => !prev);
-    }
-    setProductName("");
-    setProductQty("");
+   
+    
+    
+    const response =await axios.post(`${import.meta.env.VITE_BACKEND_SERVER_URL}/api/requirements/add`,newProduct)
+    // console.log(response.data)
+    // if(response.status===400 && response.data.message==="Requirement already exists for this product please modify quantity"){
+    //   console.log('here')
+    //   return setErr("Requirement already exists for this product please modify quantity")
+    // }
+   
+    // if(response.status===201){
+    //   toast.success('Saved')
+    //   setRefresh(prev => !prev);
+    // }
+    
+    // setProductName("");
+    // setProductQty("");
   };
 
   const getDealerRate = (productName, seller) => {
@@ -167,6 +177,7 @@ const Order = () => {
                 value={productQty}
               />
             </div>
+            {err && <p className="text-red-500 mb-2">{err}</p>}
             <button
               type="submit"
               className="bg-blue-400 py-1 rounded-sm text-white cursor-pointer"
